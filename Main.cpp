@@ -1,9 +1,18 @@
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
 #include <windows.h>
+#include <vector>
+#include "platforms.h"
+
+
+
 int const SCREENWIDTH = 800;
 int const SCREENHEIGHT = 600; 
- 
+
+sf::RenderWindow window(sf::VideoMode(800, 600), "SFML");
+std::vector<platform> vectorPlatforms;
+void SearchVectorForPlatforms(sf::RenderWindow & inWindow, float deltaX, float deltaY);
+
 int main()
 {
 	sf::Sprite marioSpriteL;
@@ -38,13 +47,17 @@ int main()
 	marioSpriteR.setTexture(texture1);
 	structure1Sprite.setTexture(texture3);
 
-	
+	platform platformObject(&structure1Sprite, 400, 400);
+	vectorPlatforms.push_back(platformObject);
 	
 
-	sf::RenderWindow window(sf::VideoMode(800, 600), "SFML");
+	
+
 	marioSpriteR.setPosition((SCREENWIDTH/2) - (76/2), (SCREENHEIGHT- 76));
 	marioSpriteL.setPosition((SCREENWIDTH / 2) - (76 / 2), (SCREENHEIGHT - 76));
 	int isLeft = 0;
+
+	
 
 	while (window.isOpen())
 	{
@@ -58,13 +71,15 @@ int main()
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
 		{
 			isLeft = 1;
-			//marioSpriteL.setTexture(texture1);
-			// left key is pressed: move our character
+			
+
+
 			x = x - 1;
 			positionX--;
 			marioSpriteL.setPosition(x, y);
 			marioSpriteR.setPosition(x, y);
 			window.clear();
+			SearchVectorForPlatforms(window,0,0);
 			window.draw(marioSpriteR);
 			window.display();
 
@@ -82,6 +97,7 @@ int main()
 			marioSpriteR.setPosition(x, y);
 			marioSpriteL.setPosition(x, y);
 			window.clear();
+			SearchVectorForPlatforms(window,0,0);
 			window.draw(marioSpriteL);
 			window.display();
 			
@@ -145,10 +161,12 @@ int main()
 		window.clear();
 		if (isLeft == 0)
 		{
+			SearchVectorForPlatforms(window,0,0);
 			window.draw(marioSpriteL);
 		}
 		else
 		{
+			SearchVectorForPlatforms(window,0,0);
 			window.draw(marioSpriteR);
 		}
 		window.display();
@@ -156,4 +174,22 @@ int main()
 
 	}
 	
+}
+
+
+void SearchVectorForPlatforms(sf::RenderWindow & inWindow, float changeX, float changeY)
+{
+	
+	sf::Sprite * gottenSprite;
+	for (std::vector<platform>::iterator it = vectorPlatforms.begin(); it != vectorPlatforms.end(); ++it)
+	{
+		//sprite is platform
+		gottenSprite = it->getSprite();
+		gottenSprite->setPosition(it->x + changeX, it->y + changeY);
+		if (it->x > 0 && it->x < 600 - 76)
+		{
+			 
+			inWindow.draw(*it->platformSprite);
+		}
+	}
 }
