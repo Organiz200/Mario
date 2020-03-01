@@ -12,6 +12,7 @@ int const SCREENHEIGHT = 600;
 sf::RenderWindow window(sf::VideoMode(800, 600), "SFML");
 std::vector<platform> vectorPlatforms;
 void SearchVectorForPlatforms(sf::RenderWindow & inWindow, float deltaX, float deltaY);
+sf::Sprite* gottenSprite;
 
 int main()
 {
@@ -71,7 +72,7 @@ int main()
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
 		{
 			isLeft = 1;
-			
+
 
 
 			x = x - 1;
@@ -79,16 +80,16 @@ int main()
 			marioSpriteL.setPosition(x, y);
 			marioSpriteR.setPosition(x, y);
 			window.clear();
-			SearchVectorForPlatforms(window,0,0);
+			SearchVectorForPlatforms(window, 0, 0);
 			window.draw(marioSpriteR);
 			window.display();
 
-			
+
 		}
 
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 		{
-			
+
 			isLeft = 0;
 			//marioSpriteR.setTexture(texture2);
 			// left key is pressed: move our character
@@ -97,10 +98,10 @@ int main()
 			marioSpriteR.setPosition(x, y);
 			marioSpriteL.setPosition(x, y);
 			window.clear();
-			SearchVectorForPlatforms(window,0,0);
+			SearchVectorForPlatforms(window, 0, 0);
 			window.draw(marioSpriteL);
 			window.display();
-			
+
 		}
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
 		{
@@ -116,9 +117,9 @@ int main()
 				positionY += velocityY;
 				positionX += velocityX;
 				velocityY += gravity;
-				
+
 				if (isLeft == 1)
-				{   
+				{
 					if (positionY > (SCREENHEIGHT - 76))
 					{
 						positionY = (SCREENHEIGHT - 76);
@@ -131,10 +132,11 @@ int main()
 					window.clear();
 					marioSpriteL.setPosition(positionX, positionY);
 					marioSpriteR.setPosition(positionX, positionY);
+					SearchVectorForPlatforms(window, 0, 0);
 					window.draw(marioSpriteR);
 					window.display();
 					Sleep(20);
-					
+
 				}
 				else
 				{
@@ -151,13 +153,26 @@ int main()
 					marioSpriteL.setPosition(positionX, positionY);
 					marioSpriteR.setPosition(positionX, positionY);
 					window.draw(marioSpriteL);
+					SearchVectorForPlatforms(window, 0, 0);
 					window.display();
 					Sleep(20);
-					
+
 				}
 			} while (1);
 		}
-
+		//left
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+		{
+			SearchVectorForPlatforms(window, -1.0f, 0.0f);
+			//window.display();
+		}
+		//right
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+		{
+			SearchVectorForPlatforms(window, 1.0f, 0.0f);
+			//window.display();
+		}
+	
 		window.clear();
 		if (isLeft == 0)
 		{
@@ -180,13 +195,15 @@ int main()
 void SearchVectorForPlatforms(sf::RenderWindow & inWindow, float changeX, float changeY)
 {
 	
-	sf::Sprite * gottenSprite;
+	
 	for (std::vector<platform>::iterator it = vectorPlatforms.begin(); it != vectorPlatforms.end(); ++it)
 	{
 		//sprite is platform
 		gottenSprite = it->getSprite();
-		gottenSprite->setPosition(it->x + changeX, it->y + changeY);
-		if (it->x > 0 && it->x < 600 - 76)
+		it->x = it->x + changeX;
+		gottenSprite->setPosition((it->x), it->y );
+		
+		if (it->x > -150 && it->x < (800))
 		{
 			 
 			inWindow.draw(*it->platformSprite);
