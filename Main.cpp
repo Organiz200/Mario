@@ -29,6 +29,7 @@ int main()
 	sf::Sprite marioSpriteL;
 	sf::Sprite marioSpriteR;
 	sf::Sprite structure1Sprite;
+	sf::Sprite structure2Sprite;
 	sf::Texture texture1;
 	sf::Texture texture2;
 	sf::Texture texture3;
@@ -59,10 +60,15 @@ int main()
 	}
 	marioSpriteL.setTexture(texture2);
 	marioSpriteR.setTexture(texture1);
+	
+	
 	structure1Sprite.setTexture(texture3);
 	structure1Sprite.setPosition(400,400);
+	structure2Sprite.setTexture(texture3);
+	structure2Sprite.setPosition(400, 500);
 	platform platformObject(&structure1Sprite, 400, 400);
-	
+	platform platformObject1(&structure2Sprite, 400, 200);
+
 	//platform platformObject1(&structure1Sprite, 600, 200);
 	//platform platformObject2(&structure1Sprite, 600, 400);
 	//platform platformObject3(&structure1Sprite, 800, 200);
@@ -72,7 +78,7 @@ int main()
 	//platform platformObject7(&structure1Sprite, 1200, 200);
 
 	vectorPlatforms.push_back(platformObject);
-	//vectorPlatforms.push_back(platformObject1);
+	vectorPlatforms.push_back(platformObject1);
 	//vectorPlatforms.push_back(platformObject3);
 	//vectorPlatforms.push_back(platformObject4);
 	//vectorPlatforms.push_back(platformObject5);
@@ -289,7 +295,7 @@ int virtualJump(Character & character, std::vector<platform> vector, float &posi
 	int firstPositionX = positionX;
 	int firstPositionY = positionY;
 	positionY += velocityY;
-	positionX += velocityX;
+	positionX += 0;
 	velocityY += gravity;
 	int secondPositionY = positionY;
 	int secondPositionX = positionX;
@@ -301,11 +307,11 @@ int virtualJump(Character & character, std::vector<platform> vector, float &posi
 	{
 		if (isLeft == 1)
 		{
-			it->x = it->x + 1;// -horizontalChange;
+			it->x = it->x + 4;// -horizontalChange;
 		}
 		else
 		{
-			it->x = it->x - 1;
+			it->x = it->x - 4;
 			//it->x = it->x - 1;// horizontalChange;
 		}
 	}
@@ -324,10 +330,14 @@ int virtualJump(Character & character, std::vector<platform> vector, float &posi
 		
 		if (positionY > (600 - 76))
 		{	
-			positionY = (600-76);
+			
+			positionY = (600 - 76);
+			marioSpriteL.setPosition((800 / 2) - (76 / 2), 600 - 76);
+			marioSpriteR.setPosition((800 / 2) - (76 / 2), 600 - 76);
+
 			velocityY = -15;
 			velocityX = 4.0;
-			positionX = (600-76/2); 
+			positionX = (800-76/2); 
 			break;
 		}
 		
@@ -381,12 +391,15 @@ int virtualJump(Character & character, std::vector<platform> vector, float &posi
 	{
 
 		
-		if (positionY > (600 - 76))
+		if (positionY > (600 - 76 ))
 		{
 			positionY = (600 - 76);
+			marioSpriteL.setPosition((800 / 2) - (76 / 2), 600 - 76);
+			marioSpriteR.setPosition((800 / 2) - (76 / 2), 600 - 76);
+
 			velocityY = -15;
 			velocityX = 4.0;
-			positionX = 600 - 76/2;
+			positionX = 800 - 76/2;
 			break;
 		}
 		
