@@ -7,8 +7,8 @@ public:
 	sf::Sprite * platformSprite;
 	platform(sf::Sprite * sprite, float x, float y);
 	sf::Sprite * getSprite();
-	float x;
-	float y;
+	int x;
+	int y;
 
 protected:
 	
