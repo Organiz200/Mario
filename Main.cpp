@@ -4,16 +4,16 @@
 #include <vector>
 #include "platforms.h"
 #include "Character.h"
-
+#include "class1.h"
 
 int const SCREENWIDTH = 800;
 int const SCREENHEIGHT = 600;
 
 Character character;
-
+class1 classA;
 sf::RenderWindow window(sf::VideoMode(800, 600), "SFML");
 std::vector<platform> vectorPlatforms;
-void SearchVectorForPlatforms(sf::RenderWindow & inWindow, float deltaX, float deltaY, int isLeft);
+//void SearchVectorForPlatforms(sf::RenderWindow & inWindow, float deltaX, float deltaY, int isLeft);
 int virtualJump(Character & character, std::vector<platform> vector, float& platPositionX, float& platPositionY, float& platVelocityY, float& platVelocityX,
 	float& platGravity, int& isLeft, sf::RenderWindow& window, sf::Sprite & marioSpriteR, sf::Sprite &marioSpriteL, int& GoingDown, int& characterOnBar
 	);
@@ -65,9 +65,9 @@ int main()
 	structure1Sprite.setTexture(texture3);
 	structure1Sprite.setPosition(400,400);
 	structure2Sprite.setTexture(texture3);
-	structure2Sprite.setPosition(400, 500);
+	structure2Sprite.setPosition(500, 500);
 	platform platformObject(&structure1Sprite, 400, 400);
-	platform platformObject1(&structure2Sprite, 400, 200);
+	platform platformObject1(&structure2Sprite, 500, 200);
 
 	//platform platformObject1(&structure1Sprite, 600, 200);
 	//platform platformObject2(&structure1Sprite, 600, 400);
@@ -115,7 +115,7 @@ int main()
 			marioSpriteL.setPosition(x, y);
 			marioSpriteR.setPosition(x, y);
 			window.clear();
-			SearchVectorForPlatforms(window, 0, 0, 1);
+			classA.SearchVectorForPlatforms(vectorPlatforms, window, 0, 0, 1);
 			window.draw(marioSpriteR);
 			window.display();
 		}
@@ -130,7 +130,7 @@ int main()
 			marioSpriteR.setPosition(x, y);
 			marioSpriteL.setPosition(x, y);
 			window.clear();
-			SearchVectorForPlatforms(window, 0, 0, 0);
+			classA.SearchVectorForPlatforms(vectorPlatforms, window, 0, 0, 1);
 			window.draw(marioSpriteL);
 			window.display();
 
@@ -164,7 +164,7 @@ int main()
 					window.clear();
 					marioSpriteL.setPosition(positionX, positionY);
 					marioSpriteR.setPosition(positionX, positionY);
-					SearchVectorForPlatforms(window, 0, 0,1);
+					classA.SearchVectorForPlatforms(vectorPlatforms, window, 0, 0, 1);
 					window.draw(marioSpriteR);
 					window.display();
 					Sleep(20);
@@ -185,7 +185,7 @@ int main()
 					marioSpriteL.setPosition(positionX, positionY);
 					marioSpriteR.setPosition(positionX, positionY);
 					window.draw(marioSpriteL);
-					SearchVectorForPlatforms(window, 0, 0,0);
+					classA.SearchVectorForPlatforms(vectorPlatforms, window, 0, 0, 1);
 					window.display();
 					Sleep(20);
 
@@ -196,7 +196,9 @@ int main()
 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
 		{	//josh, ?
 			isLeft = 1;
-			SearchVectorForPlatforms(window, 4.0f, 0.0f, 1);
+			//displays platforms and moves them
+
+			classA.SearchVectorForPlatforms(vectorPlatforms, window, 0, 0, 1);
 			//structure1Sprite.setPosition(400+, 400);
 
 			//if (characterOnBar)
@@ -216,20 +218,23 @@ int main()
 		//right
 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
 		{
-			isLeft = 0;
-			SearchVectorForPlatforms(window, 4.0f, 0.0f, 0);
-			
+			sf::Vector2f  position = marioSpriteL.getPosition();
+			int temp1 = 362;
+			//josh -5
+			int temp2 = position.y;
+
+			character.movesLeft(classA, window, goingDown, temp1, temp2, SCREENWIDTH, vectorPlatforms, marioSpriteL, marioSpriteR, character, isLeft, characterOnBar, positionY);
 		}
 	
 		window.clear();
 		if (isLeft == 0)
 		{
-			SearchVectorForPlatforms(window,0,0,1);
+			classA.SearchVectorForPlatforms(vectorPlatforms, window, 0, 0, 1);
 			window.draw(marioSpriteL);
 		}
 		else
 		{
-			SearchVectorForPlatforms(window,0,0,0);
+			classA.SearchVectorForPlatforms(vectorPlatforms, window, 0, 0, 1);
 			window.draw(marioSpriteR);
 		}
 		window.display();
@@ -240,43 +245,14 @@ int main()
 }
 
 //loop through platforms and move them horizontally
-void SearchVectorForPlatforms(sf::RenderWindow & inWindow, float changeX, float changeY, int isLeft1)
-{
-	
-	
-	for (std::vector<platform>::iterator it = vectorPlatforms.begin(); it != vectorPlatforms.end(); ++it)
-	{
-		//sprite is platform
-		gottenSprite = it->getSprite();
-		
-		//character faces left
-		if (isLeft1 == 1)
-		{
-			it->x = it->x + changeX;
 
-			gottenSprite->setPosition((it->x), it->y);
-		}
-
-		if (isLeft1 == 0)
-		{
-			it->x = it->x - changeX;
-			gottenSprite->setPosition((it->x), it->y);
-		}
-
-		if (it->x > -150 && it->x < (800))
-		{
-			 
-			inWindow.draw(*it->platformSprite);
-		}
-	}
-	Sleep(10);
-}
 //moves character up and down  and moves platforms too (left and right)
 int virtualJump(Character & character, std::vector<platform> vector, float &positionX, float &positionY, float& velocityY, float & velocityX,
 	float & gravity, int & isLeft, sf::RenderWindow & window, sf::Sprite & marioSpriteR, sf::Sprite& marioSpriteL, int & goingDown, int& characterOnBar)
 {
 	goingDown = 0;
-
+	int temp1 = 0;
+	int temp2 = 0;
 	int platformX = 0;
 	int platformY = 0;
 	//Character character;
@@ -381,7 +357,7 @@ int virtualJump(Character & character, std::vector<platform> vector, float &posi
 
 
 
-		SearchVectorForPlatforms(window, 4, 0, 1);
+		classA.SearchVectorForPlatforms(vectorPlatforms, window, 0, 0, 1);
 		window.display();
 		Sleep(40);
 	}
@@ -406,10 +382,7 @@ int virtualJump(Character & character, std::vector<platform> vector, float &posi
 
 
 		/////////////
-		sf::Vector2f  position = marioSpriteL.getPosition();
-		int temp1 = position.x;
-		int temp2 = position.y ;
-
+		
 
 		//returns platform x and platform y
 		int answer1 = character.isOnPlatform(vector, 800, temp1, temp2, goingDown, characterOnBar, positionY, platformX, platformY);
@@ -436,7 +409,7 @@ int virtualJump(Character & character, std::vector<platform> vector, float &posi
 
 			//window.display();
 		}
-		SearchVectorForPlatforms(window, 4, 0, 0);
+		classA.SearchVectorForPlatforms(vectorPlatforms, window, 0, 0, 1);
 		window.display();
 		Sleep(20);
 		

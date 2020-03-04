@@ -24,12 +24,18 @@
     <ClCompile Include="Character.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="class1.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="platforms.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Character.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="class1.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

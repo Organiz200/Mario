@@ -11,3 +11,4 @@ sf::Sprite * platform::getSprite()
 {
 	return(platformSprite);
 }
+
