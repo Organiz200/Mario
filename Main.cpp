@@ -17,6 +17,9 @@ void SearchVectorForPlatforms(sf::RenderWindow & inWindow, float deltaX, float d
 int virtualJump(Character & character, std::vector<platform> vector, float& platPositionX, float& platPositionY, float& platVelocityY, float& platVelocityX,
 	float& platGravity, int& isLeft, sf::RenderWindow& window, sf::Sprite & marioSpriteR, sf::Sprite &marioSpriteL, int& GoingDown, int& characterOnBar
 	);
+
+int movesLeft(sf::RenderWindow& window, int& goingDown, int& characterLeft, int& characterRight, int SCREENWIDTH, std::vector<platform> vector, sf::Sprite& marioSpriteL, sf::Sprite& marioSpriteR, Character& character, int& isLeft, int& characterOnBar, float positionY);
+
 sf::Sprite* gottenSprite;
 int characterOnBar = 0;
 int answer = 0;
@@ -197,21 +200,8 @@ int main()
 		{	//josh, ?
 			isLeft = 1;
 			SearchVectorForPlatforms(window, 4.0f, 0.0f, 1);
-			//structure1Sprite.setPosition(400+, 400);
-
-			//if (characterOnBar)
-			//{
-			//	
-			//}
-			//
-			//sf::Vector2f  position = marioSpriteL.getPosition();
-			//int temp1 = position.x;
-			//int temp2 = position.y;
-
-			//int onPlat = character.isOnPlatform(vector, SCREENWIDTH,temp1,temp2,);
-			////if not on a platform, and on ground walk
-			////if not on a platform, walk left, checking for end of platform
-			////isonplatform = 1 ; on platform
+			//character.movesLeft(SCREENWIDTH, window, goingDown, temp1, temp2, vectorPlatforms, marioSpriteL, marioSpriteR,  character, isLeft, characterOnBar, positionY);
+			
 		}
 		//right
 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
@@ -354,7 +344,7 @@ int virtualJump(Character & character, std::vector<platform> vector, float &posi
 
 		
 		//two last parameters return a value, they don't do anything fof the function called
-		int answer1 = character.isOnPlatform(vector, 800, temp1, temp2, goingDown, characterOnBar, positionY, gPlatformX, gPlatformY);
+		int answer1 = character.isOnPlatform(goingDown, vector, SCREENWIDTH, temp1, temp2, goingDown, characterOnBar, positionY, gPlatformX, gPlatformY);
 
 
 		if (answer1 == 0)
@@ -412,7 +402,7 @@ int virtualJump(Character & character, std::vector<platform> vector, float &posi
 
 
 		//returns platform x and platform y
-		int answer1 = character.isOnPlatform(vector, 800, temp1, temp2, goingDown, characterOnBar, positionY, platformX, platformY);
+		int answer1 = character.isOnPlatform(goingDown, vector, 800, temp1, temp2, goingDown, characterOnBar, positionY, platformX, platformY);
 		if (answer1 == 0)
 		{
 			
@@ -446,3 +436,7 @@ int virtualJump(Character & character, std::vector<platform> vector, float &posi
 return(1);
 
 }
+
+
+
+////////////

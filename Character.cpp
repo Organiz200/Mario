@@ -6,7 +6,7 @@ Character::Character()
 
 }
 //falling
-int Character::isOnPlatform(std::vector<platform>& vector, int screenWidth, int& characterX, int& characterY, int& goingDown, int& characterOnBar, float& positionY, int& platformX, int &platformY)
+int Character::isOnPlatform(int goingDown, std::vector<platform>& vector, int screenWidth, int& characterX, int& characterY, int& isGoingDown, int& characterOnBar, float& positionY, int& platformX, int& platformY)
 {
 	
 
@@ -37,4 +37,102 @@ int Character::isOnPlatform(std::vector<platform>& vector, int screenWidth, int&
 	//not on bar
 	//positionY = (holder - 72);
 	return(0);
+}
+
+
+////////////
+
+
+int Character::movesLeft(const int SCREENWIDTH, sf::RenderWindow& window, int& goingDown, int& characterLeft, int& characterY, std::vector<platform> &vector, sf::Sprite& marioSpriteL, sf::Sprite& marioSpriteR, Character& character, int& isLeft, int& characterOnBar, float positionY)
+{
+	sf::Vector2f  position = marioSpriteL.getPosition();
+	int temp1 = position.x;
+	int temp2 = position.y;
+
+	//isLeft = 0;
+	int notNeeded1, notNeeded2 = 0;
+	int answer = character.isOnPlatform(goingDown, vector, SCREENWIDTH, characterLeft, characterY, goingDown, characterOnBar, positionY, notNeeded1, notNeeded2);
+	//on platform
+	if (answer == 1)
+	{
+		temp1 = temp1 + 4;
+		//move platforms
+		platform::SearchVectorForPlatforms(vector, window, 4.0f, 0.0f, 0);
+
+		//moved off
+		if (answer != character.isOnPlatform(goingDown, vector, SCREENWIDTH, characterLeft, characterY, goingDown, characterOnBar, positionY, notNeeded1, notNeeded2))
+		{
+			//drop
+			while (1)
+			{
+				temp2 = temp2 + 4.0f;
+				//drops
+				marioSpriteR.setPosition(temp1, temp2);
+				marioSpriteL.setPosition(temp1, temp2);
+				int answer3 = character.isOnPlatform(goingDown, vector, SCREENWIDTH, characterLeft, characterY, goingDown, characterOnBar, positionY, notNeeded1, notNeeded2);
+				//is on platform
+				if (answer3)
+				{
+					characterOnBar = 1;
+					break;
+				}
+			}
+
+
+
+
+		}
+
+		else
+		{
+			//on platform	
+			if (isLeft)
+			{
+				platform::SearchVectorForPlatforms(vector, window, 4.0f, 0.0f, 0);
+			}
+			else
+			{
+				platform::SearchVectorForPlatforms(vector, window, -4.0f, 0.0f, 0);
+			}
+
+		}
+
+
+	}
+	//characetr not on plat form
+	else
+	{
+		if (isLeft == 1)
+		{
+			platform::SearchVectorForPlatforms(vector, window, 4.0f, 0.0f, 0);
+		}
+		else
+		{
+			platform::SearchVectorForPlatforms(vector, window, -4.0f, 0.0f, 0);
+		}
+
+
+	}
+
+	int answer2 = isOnPlatform(goingDown, vector, SCREENWIDTH, characterLeft, characterY, goingDown, characterOnBar, positionY, notNeeded1, notNeeded2);
+	//not on platform anymore
+	if (answer2 == 0)
+	{
+		//drop
+		while (1)
+		{
+			temp2 = temp2 - 4.0f;
+			//drops
+			marioSpriteR.setPosition(temp1, temp2);
+			marioSpriteL.setPosition(temp1, temp2);
+			int answer = isOnPlatform(goingDown , vector, SCREENWIDTH, characterLeft, characterY, goingDown, characterOnBar, positionY, notNeeded1, notNeeded2);
+
+			if (answer == 1)
+			{
+				break;
+			}
+		}
+	}
+	return(1);
+
 }
