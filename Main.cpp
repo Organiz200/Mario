@@ -6,6 +6,10 @@
 #include "Character.h"
 
 
+//	if changing jump there are searchable values needing change, and also isOnPlatform
+//
+//
+
 int const SCREENWIDTH = 800;
 int const SCREENHEIGHT = 600;
 
@@ -206,7 +210,7 @@ int main()
 			int temp1 = 362;
 			int temp2 = position.y;
 			
-			character.movesLeft(SCREENHEIGHT, SCREENWIDTH, window, goingDown, temp1, temp2, vectorPlatforms, marioSpriteL, marioSpriteR,  character, isLeft, characterOnBar, positionY);
+			character.movesLeft(SCREENHEIGHT, SCREENWIDTH, window, goingDown, temp1, temp2, vectorPlatforms, marioSpriteL, marioSpriteR,  character, isLeft, positionY);
 			//marioSpriteL.setPosition(temp1, temp2);
 			//marioSpriteR.setPosition(temp1, temp2);
 		}
@@ -217,7 +221,7 @@ int main()
 			sf::Vector2f  position = marioSpriteL.getPosition();
 			int temp1 = 362;
 			int temp2 = position.y;
-			character.movesRight(SCREENHEIGHT, SCREENWIDTH, window, goingDown, temp1, temp2, vectorPlatforms, marioSpriteL, marioSpriteR, character, isLeft, characterOnBar, positionY);
+			character.movesRight(SCREENHEIGHT, SCREENWIDTH, window, goingDown, temp1, temp2, vectorPlatforms, marioSpriteL, marioSpriteR, character, isLeft, positionY);
 			//marioSpriteL.setPosition(temp1, temp2);
 			//marioSpriteR.setPosition(temp1, temp2);
 			
@@ -279,9 +283,6 @@ int virtualJump(Character & character, std::vector<platform> &vector, float &pos
 {
 	goingDown = 0;
 
-	int platformX = 0;
-	int platformY = 0;
-	//Character character;
 	
 	do {
 
@@ -355,8 +356,7 @@ int virtualJump(Character & character, std::vector<platform> &vector, float &pos
 
 
 		
-		//two last parameters return a value, they don't do anything fof the function called
-		int answer1 = character.isOnPlatform(SCREENHEIGHT, goingDown, vector, SCREENWIDTH, temp1, temp2, goingDown, characterOnBar, positionY, gPlatformX, gPlatformY);
+		int answer1 = character.isOnPlatform(window, marioSpriteR, marioSpriteL, SCREENHEIGHT, goingDown, vector, SCREENWIDTH, temp1, temp2, goingDown, positionY);
 
 		//not on platform
 		if (answer1 == 0)
@@ -366,6 +366,7 @@ int virtualJump(Character & character, std::vector<platform> &vector, float &pos
 			marioSpriteR.setPosition((SCREENWIDTH / 2) - (76 / 2), positionY);
 			window.clear();
 			window.draw(marioSpriteR);
+
 		}
 		else
 		{	//standing on platform
@@ -373,7 +374,7 @@ int virtualJump(Character & character, std::vector<platform> &vector, float &pos
 			marioSpriteL.setPosition(temp1, temp2);
 			marioSpriteL.setPosition(temp1, temp2);
 			window.draw(marioSpriteR);
-			positionY = (temp2);
+			positionY = (temp2 );
 			velocityY = -30.0f;
 			velocityX = 2.0f;
 			positionX = 600 - 76 / 2;
@@ -414,29 +415,28 @@ int virtualJump(Character & character, std::vector<platform> &vector, float &pos
 
 
 		//returns platform x and platform y
-		int answer1 = character.isOnPlatform(SCREENHEIGHT, goingDown, vector, 800, temp1, temp2, goingDown, characterOnBar, positionY, platformX, platformY);
+		int answer1 = character.isOnPlatform(window, marioSpriteR, marioSpriteL, SCREENHEIGHT, goingDown, vector, 800, temp1, temp2, goingDown, positionY);
 		if (answer1 == 0)
 		{
-			
+			//character jumps
 			marioSpriteL.setPosition((SCREENWIDTH / 2) - (76 / 2), positionY);
 			marioSpriteR.setPosition((SCREENWIDTH / 2) - (76 / 2), positionY);
 			window.clear();
 			window.draw(marioSpriteL);
 		}
+		//changes jump landing
 		else
 		{	//character stands
 			window.clear();
-			marioSpriteL.setPosition(temp1, temp2);
-			marioSpriteL.setPosition(temp1, temp2);
+			marioSpriteL.setPosition(temp1, positionY);
+			marioSpriteR.setPosition(temp1, positionY);
 			window.draw(marioSpriteL);
 			positionY = (temp2);
 			velocityY = -30.0f;
 			velocityX = 2.0f;
 			positionX = (temp1);
 			break;
-			//characterY = characterY - 30;
-
-			//window.display();
+			
 		}
 		SearchVectorForPlatforms(window, 4, 0, 0);
 		window.display();
