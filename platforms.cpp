@@ -2,6 +2,11 @@
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
 #include <Windows.h>"
+
+platform::platform()
+{
+
+}
 platform::platform(sf::Sprite * sprite, float x, float y)
 {
 	platformSprite = sprite;
