@@ -60,7 +60,7 @@ int platform::SearchVectorForPlatforms(std::vector<platform>& vector,sf::RenderW
 	//		inWindow.draw(*it->platformSprite);
 	//	}
 	//}
-	Sleep(10);
+	//Sleep(10);
 	
 	return(1);
 }
