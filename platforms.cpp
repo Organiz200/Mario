@@ -30,26 +30,36 @@ int platform::SearchVectorForPlatforms(std::vector<platform>& vector,sf::RenderW
 		//sprite is platform
 		gottenSprite = it->getSprite();
 
-		//character faces left
-		if (isLeft1 == 1)
-		{
-			it->x = it->x + changeX;
-
-			gottenSprite->setPosition((it->x), it->y);
-		}
-
-		if (isLeft1 == 0)
-		{
-			it->x = it->x - changeX;
-			gottenSprite->setPosition((it->x), it->y);
-		}
+		it->x = it->x + changeX;
+		gottenSprite->setPosition((it->x), it->y);
 
 		if (it->x > -150 && it->x < (800))
 		{
 
 			inWindow.draw(*it->platformSprite);
 		}
+
 	}
+	//	//character faces left
+	//	if (isLeft1 == 1)
+	//	{
+	//		it->x = it->x - changeX;
+
+	//		gottenSprite->setPosition((it->x), it->y);
+	//	}
+
+	//	if (isLeft1 == 0)
+	//	{
+	//		it->x = it->x + changeX;
+	//		gottenSprite->setPosition((it->x), it->y);
+	//	}
+
+	//	if (it->x > -150 && it->x < (800))
+	//	{
+
+	//		inWindow.draw(*it->platformSprite);
+	//	}
+	//}
 	Sleep(10);
 	
 	return(1);

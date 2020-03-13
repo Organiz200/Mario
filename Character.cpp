@@ -62,7 +62,7 @@ int Character::movesLeftInEndZoneToo(const int SCREENHEIGHT, const int SCREENWID
 	{
 
 		//move platforms
-		platform::SearchVectorForPlatforms(vector, window, -2.0f, 0.0f, 0);
+		platform::SearchVectorForPlatforms(vector, window, 2.0f, 0.0f, 0);
 		currentCharacterPlacement = currentCharacterPlacement - 2.0;
 		//is still on platform?
 		answer = character.isOnPlatform(window, marioSpriteR, marioSpriteL, SCREENHEIGHT, goingDown, vector, SCREENWIDTH, temp1, temp2, goingDown, positionY, positionX);
@@ -145,7 +145,7 @@ int Character::movesLeftInEndZoneToo(const int SCREENHEIGHT, const int SCREENWID
 			//positionX = positionX - 2;
 			marioSpriteL.setPosition(SCREENWIDTH/2 - 76/2, (SCREENHEIGHT)-(76));
 			marioSpriteR.setPosition(SCREENWIDTH / 2 - 76 / 2, (SCREENHEIGHT)-(76));
-			platform::SearchVectorForPlatforms(vector, window, -2.0f, 0.0f, 0);
+			platform::SearchVectorForPlatforms(vector, window, 2.0f, 0.0f, 0);
 			window.draw(marioSpriteR);
 		}
 
@@ -176,7 +176,7 @@ int Character::movesRightInEndZoneToo(const int SCREENHEIGHT, const int SCREENWI
 	{
 
 		//move platforms
-		platform::SearchVectorForPlatforms(vector, window, +2.0f, 0.0f, 0);
+		platform::SearchVectorForPlatforms(vector, window, -2.0f, 0.0f, 0);
 		currentCharacterPlacement = currentCharacterPlacement + 2.0;
 
 		//is still on platform?
@@ -231,14 +231,14 @@ int Character::movesRightInEndZoneToo(const int SCREENHEIGHT, const int SCREENWI
 	{
 		//right
 		// was never on platform
-		
+		/*
 		if (currentCharacterPlacement >= (rightEndzoneLine + SCREENWIDTH / 2))
 		{
 			currentCharacterPlacement = rightEndzoneLine + SCREENWIDTH / 2;
 			positionX = rightEndzoneLine + SCREENWIDTH / 2;
 			return(1);
 
-		}
+		}*/
 
 		
 
@@ -260,7 +260,7 @@ int Character::movesRightInEndZoneToo(const int SCREENHEIGHT, const int SCREENWI
 		else
 		{
 			// was never on platform - right of line -  right
-		platform::SearchVectorForPlatforms(vector, window, 2.0f, 0.0f, 0);
+		platform::SearchVectorForPlatforms(vector, window, -2.0f, 0.0f, 0);
 		currentCharacterPlacement = currentCharacterPlacement + 2.0;
 		//positionX = positionX + 2;
 		window.clear();
@@ -427,7 +427,7 @@ int Character::movesRightInEndZoneToo(const int SCREENHEIGHT, const int SCREENWI
 
 //moves character up and down  and moves platforms too (left and right)
 int Character::JumpInEndZone(int & line, int SCREENWIDTH, int SCREENHEIGHT, Character & character, std::vector<platform> & vector, float& positionX, float& positionY, float& velocityY, float& velocityX,
-		float& gravity, int& isLeft, sf::RenderWindow & window, sf::Sprite & marioSpriteR, sf::Sprite & marioSpriteL, int& goingDown, int& characterOnBar)
+		float& gravity, int& facingLeft, sf::RenderWindow & window, sf::Sprite & marioSpriteR, sf::Sprite & marioSpriteL, int& goingDown, int& characterOnBar)
 {
 		goingDown = 0;
 
@@ -435,7 +435,7 @@ int Character::JumpInEndZone(int & line, int SCREENWIDTH, int SCREENHEIGHT, Char
 		do {
 
 
-			if (isLeft == 1)
+			if (facingLeft == 1)
 			{
 				velocityX = -2.0f;
 			}
@@ -452,16 +452,16 @@ int Character::JumpInEndZone(int & line, int SCREENWIDTH, int SCREENHEIGHT, Char
 			int secondPositionX = positionX;
 			//if positive going down
 			int horizontalChange = secondPositionX - firstPositionX;
-			if (isLeft == 1)
+			if (facingLeft == 1)
 			{
 				
-				currentCharacterPlacement = currentCharacterPlacement + horizontalChange;
+				//currentCharacterPlacement = currentCharacterPlacement - 2;// horizontalChange;
 				//already subtracted right above
 				//positionX = positionX + horizontalChange;
 			}
 			else
 			{
-				currentCharacterPlacement = currentCharacterPlacement - horizontalChange;
+				//currentCharacterPlacement = currentCharacterPlacement + 2;// horizontalChange;
 			}
 
 			////////////////
@@ -474,7 +474,7 @@ int Character::JumpInEndZone(int & line, int SCREENWIDTH, int SCREENHEIGHT, Char
 			//change all platforms horizontal amount difference
 			for (std::vector<platform>::iterator it = vector.begin(); it != vector.end(); ++it)
 			{
-				if (isLeft == 1)
+				if (facingLeft == 1)
 				{
 					//jump is both sides
 					if (currentCharacterPlacement + 2  > line && currentCharacterPlacement  <= line)
@@ -490,16 +490,23 @@ int Character::JumpInEndZone(int & line, int SCREENWIDTH, int SCREENHEIGHT, Char
 						//window.draw(marioSpriteL);
 
 
-					}//jump is entirely on rigth side
+					}//jump is entirely on rigth side of line and is facing left
+
+
+
 					else if (currentCharacterPlacement  > line  )
 					{
+						/*marioSpriteL.setPosition(SCREENWIDTH / 2 - (76 / 2), positionY);
+						marioSpriteR.setPosition(SCREENWIDTH / 2 - (76 / 2), positionY);
+						window.clear();
+						window.draw(marioSpriteR);
 
-						platform::SearchVectorForPlatforms(vector, window, -2, 0, 1);
-						currentCharacterPlacement = currentCharacterPlacement - 2;
-						//positionX = positionX +2;
+						platform::SearchVectorForPlatforms(vector, window, 2, 0, 1);
+						currentCharacterPlacement = currentCharacterPlacement - 2;*/
+
 
 					}
-					else  //jump is entirely on left
+					else  //jump is entirely on left, facing left
 					{
 						
 
@@ -509,22 +516,23 @@ int Character::JumpInEndZone(int & line, int SCREENWIDTH, int SCREENHEIGHT, Char
 				//move platform when jumping right
 				else
 				{
-					if (currentCharacterPlacement > leftEndzoneLine )
-					{
-						marioSpriteL.setPosition(SCREENWIDTH/2 - 76/2, positionY);
-						marioSpriteR.setPosition(SCREENWIDTH/2 - 76/2, positionY);
-						window.clear();
-						window.draw(marioSpriteR);
-						
-						platform::SearchVectorForPlatforms(vector, window, -2, 0, 1);
-						//positionX = positionX + 2;
-						currentCharacterPlacement = currentCharacterPlacement - 2;
+					//mario on right side of line, jumping right
+					//if (currentCharacterPlacement > leftEndzoneLine )
+					//{
+					//	marioSpriteL.setPosition(SCREENWIDTH/2 - (76/2), positionY);
+					//	marioSpriteR.setPosition(SCREENWIDTH/2 - (76/2), positionY);
+					//	window.clear();
+					//	window.draw(marioSpriteR);
+					//	
+					//	platform::SearchVectorForPlatforms(vector, window, -2, 0, 1);
+					//	//positionX = positionX + 2;
+					//	currentCharacterPlacement = currentCharacterPlacement + 2;
 
-					}
-					else
-					{
-						//no platform action
-					}
+					//}
+					//else
+					//{
+					//	//no platform action
+					//}
 					
 				}
 			}
@@ -537,24 +545,47 @@ int Character::JumpInEndZone(int & line, int SCREENWIDTH, int SCREENHEIGHT, Char
 				goingDown = 1;
 			}
 
+			//josh****going right on right of line, seems to be working 
+			if (positionY > (600 - 76))
+			{
 
-			if (isLeft == 1)
+				positionY = (600 - 76);
+				//josh, other end zone
+				if (positionX >= line)
+				{
+					marioSpriteL.setPosition(SCREENWIDTH / 2 - 76 / 2, 600 - 76);
+					marioSpriteR.setPosition(SCREENWIDTH / 2 - 76 / 2, 600 - 76);
+					positionX = SCREENWIDTH / 2 - (76 / 2);
+				}
+				else
+				{
+					marioSpriteL.setPosition(positionX, 600 - 76);
+					marioSpriteR.setPosition(positionX, 600 - 76);
+					//positionX = SCREENWIDTH / 2 - (76 / 2);
+
+				}
+
+				velocityY = -30.0f;
+				if (facingLeft == 1)
+				{
+					velocityX = -2.0f;
+				}
+				else
+				{
+					velocityX = 2.0f;
+				}
+				
+				//positionX = (800 - 76 / 2);
+				break;
+			}
+
+
+			if (facingLeft == 1)
 			{
 
 				
 
-				if (positionY > (600 - 76))
-				{
-
-					positionY = (600 - 76);
-					marioSpriteL.setPosition(positionX, 600 - 76);
-					marioSpriteR.setPosition(positionX, 600 - 76);
-
-					velocityY = -30.0f;
-					velocityX = 2.0f;
-					//positionX = (800 - 76 / 2);
-					break;
-				}
+				
 
 
 
@@ -572,23 +603,26 @@ int Character::JumpInEndZone(int & line, int SCREENWIDTH, int SCREENHEIGHT, Char
 
 					
 
-					//on right side of line
-					if(currentCharacterPlacement >= SCREENWIDTH/2 - 76/2)
+					//on right side of line - jumpimng left
+					if(currentCharacterPlacement > SCREENWIDTH/2 - (76/2))
 					{
 						//right
 						//moves mario up and down
-						marioSpriteL.setPosition(positionX, positionY);
-						marioSpriteR.setPosition(positionX, positionY);
+						marioSpriteL.setPosition(SCREENWIDTH / 2 - (76 / 2), positionY);
+						marioSpriteR.setPosition(SCREENWIDTH / 2 - (76 / 2), positionY);
 						window.clear();
 						window.draw(marioSpriteR);
-						platform::SearchVectorForPlatforms(vector, window, +2, 0, 1);
-						currentCharacterPlacement = currentCharacterPlacement + 2;
+						//josh
+						positionX = SCREENWIDTH / 2 - (76 / 2);
+						platform::SearchVectorForPlatforms(vector, window, 2, 0, 1);
+						currentCharacterPlacement = currentCharacterPlacement - 2;
+						
 					}
 
-					//on left side of line going left
+					//on left side of line, jumping left
 					else
 					{
-						if (isLeft)
+						if (facingLeft)
 						{
 							currentCharacterPlacement = currentCharacterPlacement - 2;
 							positionX = positionX - 2;
@@ -601,7 +635,7 @@ int Character::JumpInEndZone(int & line, int SCREENWIDTH, int SCREENHEIGHT, Char
 							window.clear();
 							platform::SearchVectorForPlatforms(vector, window, 0, 0, 1);
 							window.draw(marioSpriteR);
-						}
+						} 
 
 					}
 
@@ -616,7 +650,7 @@ int Character::JumpInEndZone(int & line, int SCREENWIDTH, int SCREENHEIGHT, Char
 					window.draw(marioSpriteR);
 					positionY = (temp2);
 					velocityY = -30.0f;
-					velocityX = 2.0f;
+					velocityX = -2.0f;
 					//positionX = 600 - 76 / 2;
 					break;
 
@@ -642,7 +676,7 @@ int Character::JumpInEndZone(int & line, int SCREENWIDTH, int SCREENHEIGHT, Char
 
 					velocityY = -30.0f;
 					velocityX = 2.0f;
-					//positionX = 800 - 76 / 2;
+					positionX = SCREENWIDTH / 2 - (76 / 2);
 					break;
 				}
 
@@ -654,11 +688,11 @@ int Character::JumpInEndZone(int & line, int SCREENWIDTH, int SCREENHEIGHT, Char
 
 				int answer1 = character.isOnPlatform(window, marioSpriteR, marioSpriteL, SCREENHEIGHT, goingDown, vector, 800, temp1, temp2, goingDown, positionY, positionX);
 				
-				//not on platform - facing right, moving right - 
+				//not on platform - jumping right
 				if (answer1 == 0)
 				{
-					//josh
-					if (currentCharacterPlacement < SCREENWIDTH / 2 - (76 / 2) + 2)
+					//jumping right, left of line
+					if (currentCharacterPlacement < SCREENWIDTH / 2 - (76 / 2) )
 					{
 						currentCharacterPlacement = currentCharacterPlacement + 2;
 						positionX = positionX + 2;
@@ -670,17 +704,18 @@ int Character::JumpInEndZone(int & line, int SCREENWIDTH, int SCREENHEIGHT, Char
 						window.draw(marioSpriteL);
 						platform::SearchVectorForPlatforms(vector, window, 0, 0, 1);
 					}
+					//facing right, right of (or on) line
 					else
 					{
 						currentCharacterPlacement = currentCharacterPlacement + 2;
 						
 
-						marioSpriteL.setPosition(SCREENWIDTH/2 - 76/2, positionY);
-						marioSpriteR.setPosition(SCREENWIDTH / 2 - 76 / 2, positionY);
-						positionX = SCREENWIDTH / 2 - (76 / 2);
+						marioSpriteL.setPosition(SCREENWIDTH/2 - (76/2), positionY);
+						marioSpriteR.setPosition(SCREENWIDTH / 2 - (76 / 2), positionY);
+						//positionX = SCREENWIDTH / 2 - (76 / 2);
 						window.clear();
 						window.draw(marioSpriteL);
-						platform::SearchVectorForPlatforms(vector, window, 2, 0, 1);
+						platform::SearchVectorForPlatforms(vector, window, -2, 0, 1);
 
 					}
 

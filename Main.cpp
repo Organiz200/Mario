@@ -37,7 +37,7 @@ int goingDown = 0;
 int gPlatformX = 0;
 int gPlatformY = 0;
 //int currentCharacterPlacement = SCREENWIDTH/2 -( 76 / 2);
-int line = 800;
+int line = 400 - (76 / 2);
 int main()
 {
 	sf::Sprite marioSpriteL;
@@ -79,14 +79,14 @@ int main()
 	
 	
 	structure1Sprite.setTexture(texture3);
-	structure1Sprite.setPosition(400,400);
+	structure1Sprite.setPosition(400,200);
 	structure2Sprite.setTexture(texture3);
-	structure2Sprite.setPosition(400, 500);
+	structure2Sprite.setPosition(600, 200);
 
 	structure3Sprite.setTexture(texture3);
 	structure3Sprite.setPosition(1050, 500);
 
-	platform platformObject(&structure1Sprite, 400, 400);
+	platform platformObject(&structure1Sprite, 400, 200);
 	platform platformObject1(&structure2Sprite, 600, 200);
 	platform platformObject2(&structure3Sprite, 1050, 500);
 	//platform platformObject2(&structure1Sprite, 600, 400);
