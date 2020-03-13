@@ -551,11 +551,14 @@ int Character::JumpInEndZone(int & line, int SCREENWIDTH, int SCREENHEIGHT, Char
 
 				positionY = (600 - 76);
 				//josh, other end zone
+				
+				//right of line, 
 				if (positionX >= line)
 				{
 					marioSpriteL.setPosition(SCREENWIDTH / 2 - 76 / 2, 600 - 76);
 					marioSpriteR.setPosition(SCREENWIDTH / 2 - 76 / 2, 600 - 76);
 					positionX = SCREENWIDTH / 2 - (76 / 2);
+					platform::SearchVectorForPlatforms(vector, window, -2, 0, 1);
 				}
 				else
 				{
