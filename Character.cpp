@@ -663,7 +663,7 @@ int Character::JumpInEndZone(int & line, int SCREENWIDTH, int SCREENHEIGHT, Char
 
 			
 				window.display();
-				Sleep(10);
+				Sleep(40);
 			}
 
 			////////////////////////////jump in right hand direction
@@ -740,7 +740,7 @@ int Character::JumpInEndZone(int & line, int SCREENWIDTH, int SCREENHEIGHT, Char
 				}
 				//platform::SearchVectorForPlatforms(vector, window, 4, 0, 0);
 				window.display();
-				Sleep(10);
+				Sleep(30);
 
 			}
 
