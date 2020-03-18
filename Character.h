@@ -9,6 +9,7 @@
 class Character
 {
 public:
+	
 	platform  platform1;
 	// full scroll is zero to 800 * 5
 	int rightEndzoneLine;

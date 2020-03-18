@@ -6,6 +6,12 @@
 #include "Character.h"
 
 
+//these defines are in main.cpp and character.cpp
+#define VELOCITYX 2
+#define VELOCITYY -30
+#define POSXCENTER 362
+#define GRAVITY 2
+
 //	if changing jump there are searchable values needing change, and also isOnPlatform
 //
 //
@@ -50,13 +56,13 @@ int main()
 	sf::Texture texture2;
 	sf::Texture texture3;
 
-	float positionX = ((SCREENWIDTH / 2) - (76 / 2));
+	float positionX = POSXCENTER;
 	float positionY = (SCREENHEIGHT - 76);
 	float x = positionX;
 	float y = positionY;
-	float velocityY = -30.0f;
-	float velocityX = 2.0f;
-	float gravity = 2.0f;
+	float velocityY = VELOCITYY;
+	float velocityX = VELOCITYX;
+	float gravity = GRAVITY;
 
 	
 	//float platGravity = 0.5f;
@@ -170,11 +176,11 @@ int main()
 			do {
 				if (isLeft == 1)
 		 		{
-					velocityX = -2.0f;
+					velocityX = -VELOCITYX;
 				}
 				else
 				{
-					velocityX = 2.0f;
+					velocityX = VELOCITYX;
 				}
 				positionY += velocityY;
 				positionX += velocityX;
@@ -186,8 +192,8 @@ int main()
 					{
 						positionY = (SCREENHEIGHT - 76);
 						y = positionY;
-						velocityY = -30.0f;
-						velocityX = 2.0f;
+						velocityY = VELOCITYY;
+						velocityX = VELOCITYX;
 						x = positionX;
 						break;
 					}
@@ -206,8 +212,8 @@ int main()
 					{
 						positionY = (SCREENHEIGHT - 76);
 						y = positionY;
-						velocityY = -30.0f;
-						velocityX = 2.0f;
+						velocityY = VELOCITYY;
+						velocityX = VELOCITYX;
 						x = positionX;
 						break;
 					}
